@@ -104,11 +104,11 @@ CollegeService collegeService;
 		int[] scores = {
 				75, 60, 95, 85, 100
 		};
-		NameScore[] subjectScores = collegeService.subjectsScores("Vasya")
-				.toArray(NameScore[]::new);
+		SubjectNameScore[] subjectScores = collegeService.subjectsScores("Vasya")
+				.toArray(SubjectNameScore[]::new);
 		assertEquals(scores.length, subjectScores.length);
 		IntStream.range(0, scores.length).forEach(i -> {
-			assertEquals(subjects[i], subjectScores[i].getName());
+			assertEquals(subjects[i], subjectScores[i].getSubjectName());
 			assertEquals(scores[i], subjectScores[i].getScore());
 		});
 		
