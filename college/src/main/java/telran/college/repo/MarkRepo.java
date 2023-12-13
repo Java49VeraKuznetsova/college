@@ -19,4 +19,18 @@ List<String> findBestStudentsSubjectType(SubjectType type, int nStudents);
 		+ "right join m.student st "
 		+ "group by st.name, city having count(m.score) < :scoresThreshold")
 List<StudentCity> findStudentsScoresLess(int scoresThreshold);
+
+/*********************************/
+/*
+String JOIN_STUDENTS_MARKS = "FROM students_lecturers st join marks m on stid=st.id ";
+@Query(value="SELECT st.name as name, round(avg(score)) as score " + 
+JOIN_STUDENTS_MARKS + "group by st.name order by avg(score) desc", nativeQuery=true)
+
+*/
+/*
+@Query ("SELECT student.name as studentName, round (avg(score)) as score "
+		+ " FROM Mark group by student.name order by avg(score) desc ") 
+List<NameScore> studentsMarks();
+*/
+
 }

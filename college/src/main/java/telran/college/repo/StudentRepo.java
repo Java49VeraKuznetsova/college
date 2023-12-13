@@ -15,16 +15,26 @@ public interface StudentRepo extends JpaRepository<Student, Long> {
 	/**********************/
 	
 	/*************************/
+	/*
 	@Query(value="SELECT st.name as name, round(avg(score)) as score " + 
 JOIN_STUDENTS_MARKS + "group by st.name order by avg(score) desc", nativeQuery=true)
 	List<NameScore> studentsMarks();
-	
+	*/
 	/*************************************/
+	/*
 	@Query(value="SELECT name, phone from students_lecturers"
 			+ " where EXTRACT (MONTH FROM birth_date) = :month and dtype='Student'",
 			nativeQuery = true)
 	List<NamePhone> findStudentsBurnMonth(int month);
+	*/
 	/************************************************/
 	
+	@Query("SELECT st.name as name, st. phone as phone from Student st  "
+			+ " where EXTRACT (MONTH FROM st.birthDate) = :month ")
+	List<NamePhone> findStudentsBurnMonth(int month);
+	
+	@Query ("SELECT student.name as studentName, round (avg(score)) as score "
+			+ " FROM Mark group by student.name order by avg(score) desc ") 
+	List<NameScore> studentsMarks();
 	
 }

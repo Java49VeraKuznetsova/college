@@ -38,6 +38,7 @@ CollegeService collegeService;
 		IntStream.range(0, students.length)
 		.forEach(i -> {
 			assertEquals(students[i], studentMarksArr[i].getName());
+			//assertEquals(students[i], studentMarksArr[i].getName());
 			assertEquals(scores[i], studentMarksArr[i].getScore());
 		});
 	}
@@ -93,6 +94,7 @@ CollegeService collegeService;
 		assertEquals(expectedNames.length, namePhones.length);
 		IntStream.range(0, namePhones.length).forEach(i -> {
 			assertEquals(expectedNames[i], namePhones[i].getName());
+	
 			assertEquals(expectedPhones[i], namePhones[i].getPhone());
 		});
 	}

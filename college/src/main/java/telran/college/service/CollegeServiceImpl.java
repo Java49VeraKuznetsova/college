@@ -23,11 +23,12 @@ public class CollegeServiceImpl implements CollegeService {
 	public List<NameScore> studentsAvgMarks() {
 		
 		return studentRepo.studentsMarks();
+		//return markRepo.studentsMarks();
 	}
 	@Override
 	public List<LecturerHours> lecturersMostHours(int nLecturers) {
 		
-		return lecturerRepo.findLecturersMostHours(nLecturers);
+		return subjectRepo.findLecturersMostHours(nLecturers);
 	}
 	@Override
 	public List<StudentCity> studentsScoresLess(int nThreshold) {
@@ -42,7 +43,8 @@ public class CollegeServiceImpl implements CollegeService {
 	@Override
 	public List<NamePhone> lecturersCity(String city) {
 		//TODO method with named query
-		return null;
+	//	return lecturerRepo.findByLecturerName(city);
+		return lecturerRepo.findByCity(city);
 	}
 	@Override
 	public List<SubjectNameScore> subjectsScores(String studentName) {
