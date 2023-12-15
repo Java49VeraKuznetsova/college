@@ -76,6 +76,12 @@ public class CollegeServiceImpl implements CollegeService {
 	@Override
 	@Transactional(readOnly = false)
 	public SubjectDto addSubject(SubjectDto subjectDto) {
+		//ADD by me
+		/*
+		if(subjectRepo.existsById(subjectDto.id())) {
+			throw new IllegalStateException(subjectDto.id() + " already exists");
+		}
+		*/
 		Lecturer lecturer = null;
 		if(subjectDto.lecturerId() != null) {
 			lecturer = lecturerRepo.findById(subjectDto.lecturerId())
@@ -89,7 +95,7 @@ public class CollegeServiceImpl implements CollegeService {
 	@Override
 	@Transactional(readOnly = false)
 	public MarkDto addMark(MarkDto markDto) {
-		// TODO Auto-generated method stub
+		// Auto-generated method stub
 		
 		Student	student = studentRepo.findById(markDto.studentId())
 					.orElseThrow(() -> new NotFoundException(markDto.studentId() + " not exists"));
@@ -125,6 +131,9 @@ public class CollegeServiceImpl implements CollegeService {
 	@Transactional(readOnly = false)
 	public PersonDto deleteLecturer(long id) {
 		// TODO Auto-generated method stub
+		Lecturer lecturer = lecturerRepo.findById(id)
+				.orElseThrow(() -> new NotFoundException(id +" no lecturer with such id"));
+	//	List<Subject> subjects = subjectRepo.findAllById((new Long(id)));
 		//find Lecturer by id (with possible NotFoundException)
 		//find all subjects with a given lecturer
 		// update all subjects with being deleted lecturer by setting null in field Lecturer

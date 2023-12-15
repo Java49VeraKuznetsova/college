@@ -2,6 +2,7 @@ package telran.college;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -12,6 +13,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import telran.college.dto.*;
 import telran.college.service.CollegeService;
+import telran.exceptions.NotFoundException;
 @SpringBootTest
 @Sql(scripts = {"db_test.sql"})
 class CollegeServiceTest {
@@ -113,6 +115,84 @@ CollegeService collegeService;
 			assertEquals(scores[i], subjectScores[i].getScore());
 		});
 		
+	
+	}
+	@Test 
+	void addStudentTest() {
+		LocalDate birthDate = LocalDate.parse("2006-08-16");
+		PersonDto newStudent = new PersonDto (129l, "Shmulik", birthDate, "Jerusalem", "05801234567");
+		PersonDto newStudentWrongID = new PersonDto (123l, "Shmulik", birthDate, "Jerusalem", "05801234567");
+		PersonDto student = collegeService.addStudent(newStudent);
+		assertEquals("Shmulik", student.name());
+		assertEquals(129l, student.id());
+		assertEquals("Jerusalem", student.city());
+		assertEquals("05801234567", student.phone());
+		assertEquals(birthDate, student.birthDate());
+		assertThrows(IllegalStateException.class, ()->  collegeService.addStudent(newStudentWrongID));
+		assertEquals(newStudent, student);
+		
+	
+	}
+	@Test
+	void addLecturerTest() {
+		LocalDate birthDate = LocalDate.parse("1996-09-16");
+		PersonDto newLecturerWrongID = new PersonDto(1230l,"Shmulik", birthDate, "Jerusalem", "05801234567");
+		PersonDto newLecturer = new PersonDto(1233l,"Shmulik", birthDate, "Jerusalem", "05801234567");
+		PersonDto lecturer = collegeService.addLecturer(newLecturer);
+				assertThrows(IllegalStateException.class, ()-> collegeService.addLecturer(newLecturerWrongID));
+				assertEquals(1233l, lecturer.id());
+				assertEquals("Shmulik", lecturer.name());
+				assertEquals(birthDate, lecturer.birthDate());
+				assertEquals("Jerusalem", lecturer.city());
+				assertEquals("05801234567", lecturer.phone());
+				assertEquals(newLecturer, lecturer);
+	}
+	@Test
+	void addSubjectTest() {
+		SubjectDto newSubject = new SubjectDto(326l, "Tecnology", 100, 1230l, SubjectType.BACK_END);
+		//??
+		SubjectDto newSubjectWrongID = new SubjectDto(322l, "Tecnology", 100, 1230L, SubjectType.BACK_END);
+		SubjectDto newSubjectWrongLecturer = new SubjectDto(326l, "Tecnology", 100, 1235L, SubjectType.BACK_END);
+		
+		SubjectDto subject = collegeService.addSubject(newSubject);
+		assertEquals("Tecnology", subject.name());
+		assertEquals(newSubject, subject);
+		assertThrows(NotFoundException.class, () -> collegeService.addSubject(newSubjectWrongLecturer));
+		//??
+		//assertThrows(IllegalStateException.class, () -> collegeService.addSubject(newSubjectWrongID));
+	}
+	@Test
+	void addMarkTest() {
+		MarkDto newMark = new MarkDto(128l, 321l, 95);
+		MarkDto newMarkWrongStudentID = new MarkDto(129l, 321l, 95);
+		MarkDto newMarkWrongSubjectID = new MarkDto(128l, 330l, 95);
+		
+		MarkDto mark = collegeService.addMark(newMark);
+		assertEquals(newMark, mark);
+		assertThrows(NotFoundException.class, () -> collegeService.addMark(newMarkWrongSubjectID));
+		assertThrows(NotFoundException.class, () -> collegeService.addMark(newMarkWrongStudentID));
+	}
+	@Test
+	void updateStudentTest() {
+		LocalDate birthDate = LocalDate.parse("1990-11-12");
+		PersonDto updateStudentSara = new PersonDto (124l, "Sara", birthDate, "Jerusalem", "05801234567");
+		PersonDto updateStudentWrongID = new PersonDto (134l, "Sara", birthDate, "Jerusalem", "05801234567");
+		PersonDto studentNewSara = collegeService.updateStudent(updateStudentSara);
+		
+		assertThrows(NotFoundException.class,() -> collegeService.updateStudent(updateStudentWrongID));
+		assertEquals("Jerusalem", studentNewSara.city());
+		assertEquals("05801234567", studentNewSara.phone());
+		
+	}
+	@Test 
+	void updateLecurerTest() {
+		PersonDto updateLectorMozes = new PersonDto(1231l, "Mozes", LocalDate.parse("1963-10-20"), "Lod", "05801234567");
+		PersonDto updateLectorWrongID = 
+				new PersonDto(1331l, "Mozes", LocalDate.parse("1963-10-20"), "Lod", "05801234567");
+		
+		
+		assertThrows(NotFoundException.class, () -> collegeService.updateLecturer(updateLectorWrongID));
+		assertEquals(updateLectorMozes, collegeService.updateLecturer(updateLectorMozes));
 	}
 
 }
