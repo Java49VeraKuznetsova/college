@@ -7,7 +7,7 @@ import telran.college.dto.PersonDto;
 @Entity
 @NoArgsConstructor
 public class Lecturer extends Person {
-public Lecturer(PersonDto person) {
-	super(person);
+public Lecturer(PersonDto personDto) {
+	super(personDto);
 }
 }

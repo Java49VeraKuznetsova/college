@@ -1,6 +1,7 @@
 package telran.college.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,8 +66,12 @@ public class CollegeServiceImpl implements CollegeService {
 	@Override
 	@Transactional(readOnly = false)
 	public PersonDto addLecturer(PersonDto personDto) {
-		// TODO Auto-generated method stub
-		return null;
+		// Auto-generated method stub
+		if(lecturerRepo.existsById(personDto.id())) {
+			throw new IllegalStateException(personDto.id() + " already exists");
+		}
+		lecturerRepo.save(new Lecturer(personDto));
+		return personDto;
 	}
 	@Override
 	@Transactional(readOnly = false)
@@ -85,7 +90,17 @@ public class CollegeServiceImpl implements CollegeService {
 	@Transactional(readOnly = false)
 	public MarkDto addMark(MarkDto markDto) {
 		// TODO Auto-generated method stub
-		return null;
+		
+		Student	student = studentRepo.findById(markDto.studentId())
+					.orElseThrow(() -> new NotFoundException(markDto.studentId() + " not exists"));
+		Subject	subject = subjectRepo.findById(markDto.subjectId())
+					.orElseThrow(() -> new NotFoundException(markDto.subjectId() + " not exists"));
+		Mark mark = new Mark(markDto);
+		mark.setStudent(student);
+		mark.setSubject(subject);
+			
+		
+		return markDto;
 	}
 	@Override
 	@Transactional(readOnly = false)
@@ -99,12 +114,17 @@ public class CollegeServiceImpl implements CollegeService {
 	@Override
 	@Transactional(readOnly = false)
 	public PersonDto updateLecturer(PersonDto personDto) {
-		// TODO Auto-generated method stub
-		return null;
+		Lecturer lecturer = lecturerRepo.findById(personDto.id())
+				.orElseThrow(() -> new NotFoundException(personDto.id() + " not exists"));
+		lecturer.setCity(personDto.city());
+		lecturer.setPhone(personDto.phone());
+		
+		return personDto;
 	}
 	@Override
 	@Transactional(readOnly = false)
 	public PersonDto deleteLecturer(long id) {
+		// TODO Auto-generated method stub
 		//find Lecturer by id (with possible NotFoundException)
 		//find all subjects with a given lecturer
 		// update all subjects with being deleted lecturer by setting null in field Lecturer
@@ -115,6 +135,7 @@ public class CollegeServiceImpl implements CollegeService {
 	@Override
 	@Transactional(readOnly = false)
 	public SubjectDto deleteSubject(long id) {
+		// TODO Auto-generated method stub
 		//find Subject by id (with possible NotFoundException)
 		// delete all marks with the subject
 		//delete subject
