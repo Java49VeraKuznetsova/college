@@ -9,32 +9,26 @@ import telran.college.dto.*;
 import telran.college.entities.*;
 
 public interface StudentRepo extends JpaRepository<Student, Long> {
-	String JOIN_STUDENTS_MARKS = "FROM students_lecturers st join marks m on stid=st.id ";
-	String JOIN_ALL = JOIN_STUDENTS_MARKS
-			+ "join subjects sb on sb.id=suid ";
-	/**********************/
 	
+	/**********************/
+	@Query("SELECT student.name FROM Mark where subject.type=:type"
+			+ " group by student.name order by avg(score) desc limit :nStudents")
+List<String> findBestStudentsSubjectType(SubjectType type, int nStudents);
 	/*************************/
-	/*
-	@Query(value="SELECT st.name as name, round(avg(score)) as score " + 
-JOIN_STUDENTS_MARKS + "group by st.name order by avg(score) desc", nativeQuery=true)
+	@Query(value="SELECT student.name as studentName, round(avg(score)) as score " + 
+" FROM Mark group by student.name order by avg(score) desc")
 	List<NameScore> studentsMarks();
-	*/
+	/*********************************/
+	@Query(value="SELECT student.name as studentName, student.city as studentCity "
+			+ "from Mark mark "
+			+ "right join mark.student student   "
+			+ "group by student.name, student.city having count(mark.score) < :scoresThreshold")
+	List<StudentCity> findStudentsScoresLess(int scoresThreshold);
 	/*************************************/
-	/*
-	@Query(value="SELECT name, phone from students_lecturers"
-			+ " where EXTRACT (MONTH FROM birth_date) = :month and dtype='Student'",
-			nativeQuery = true)
+	@Query(value="SELECT  st.name as name,  st.phone as phone from Student st"
+			+ " where EXTRACT (MONTH FROM st.birthDate) = :month")
 	List<NamePhone> findStudentsBurnMonth(int month);
-	*/
 	/************************************************/
 	
-	@Query("SELECT st.name as name, st. phone as phone from Student st  "
-			+ " where EXTRACT (MONTH FROM st.birthDate) = :month ")
-	List<NamePhone> findStudentsBurnMonth(int month);
-	
-	@Query ("SELECT student.name as studentName, round (avg(score)) as score "
-			+ " FROM Mark group by student.name order by avg(score) desc ") 
-	List<NameScore> studentsMarks();
 	
 }

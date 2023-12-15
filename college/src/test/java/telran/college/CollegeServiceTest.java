@@ -19,7 +19,7 @@ class CollegeServiceTest {
 CollegeService collegeService;
 	@Test
 	void bestStudentsTypeTest() {
-		List<String> students = collegeService.bestStudentsSubjectType("BACK_END", 2);
+		List<String> students = collegeService.bestStudentsSubjectType(SubjectType.BACK_END, 2);
 		String[] expected = {
 				"David", "Yosef"
 		};
@@ -35,10 +35,10 @@ CollegeService collegeService;
 				96, 95, 83, 80, 78
 		};
 		NameScore[] studentMarksArr = studentMarks.toArray(NameScore[]::new);
+		
 		IntStream.range(0, students.length)
 		.forEach(i -> {
-			assertEquals(students[i], studentMarksArr[i].getName());
-			//assertEquals(students[i], studentMarksArr[i].getName());
+			assertEquals(students[i], studentMarksArr[i].getStudentName());
 			assertEquals(scores[i], studentMarksArr[i].getScore());
 		});
 	}
@@ -62,8 +62,8 @@ CollegeService collegeService;
 		List<StudentCity> studentCityList = collegeService.studentsScoresLess(1);
 		assertEquals(1, studentCityList.size());
 		StudentCity studentCity = studentCityList.get(0);
-		assertEquals("Rehovot",studentCity.getCity());
-		assertEquals("Yakob",studentCity.getName());
+		assertEquals("Rehovot",studentCity.getStudentCity());
+		assertEquals("Yakob",studentCity.getStudentName());
 	}
 	@Test
 	void studentsBurnMonthTest() {
@@ -94,7 +94,6 @@ CollegeService collegeService;
 		assertEquals(expectedNames.length, namePhones.length);
 		IntStream.range(0, namePhones.length).forEach(i -> {
 			assertEquals(expectedNames[i], namePhones[i].getName());
-	
 			assertEquals(expectedPhones[i], namePhones[i].getPhone());
 		});
 	}

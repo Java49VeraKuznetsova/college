@@ -2,6 +2,7 @@ package telran.college.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import telran.college.dto.SubjectDto;
 import telran.college.dto.SubjectType;
 @Entity
 @Table(name="subjects")
@@ -19,5 +20,19 @@ public class Subject {
 	@Enumerated(value=EnumType.STRING)
 	@Column(nullable = false)
 	SubjectType type;
+	public Subject(SubjectDto subjectDto) {
+		id = subjectDto.id();
+		name = subjectDto.name();
+		hours = subjectDto.hours();
+		type = subjectDto.type();
+		
+	}
+	public void setLecturer(Lecturer lecturer) {
+		this.lecturer = lecturer;
+	}
+	public SubjectDto build() {
+		return new SubjectDto(id, name, hours, lecturer.id, type);
+		
+	}
 
 }

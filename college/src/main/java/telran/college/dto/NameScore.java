@@ -1,7 +1,6 @@
 package telran.college.dto;
 
 public interface NameScore {
-    String getName();
-	//String getStudentName();
+    String getStudentName();
    int getScore();
 }
