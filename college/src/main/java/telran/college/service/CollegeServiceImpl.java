@@ -132,36 +132,38 @@ public class CollegeServiceImpl implements CollegeService {
 	@Transactional(readOnly = false)
 	public PersonDto deleteLecturer(long id) {
 		
-		// TODO Auto-generated method stub
-		/*
+		// Auto-generated method stub
+		
 		Lecturer lecturer = lecturerRepo.findById(id)
 				.orElseThrow(() -> new NotFoundException(id +" no lecturer with such id"));
-	List<Subject> subjects = subjectRepo.findBySubjectId(id);
+	
+	List<Subject> subjects = subjectRepo.findByLecturerId(id);
+	
 	subjects.forEach(s->s.setLecturer(null));
 	lecturerRepo.delete(lecturer);
-	*/
+	
 		//find Lecturer by id (with possible NotFoundException)
 		//find all subjects with a given lecturer
 		// update all subjects with being deleted lecturer by setting null in field Lecturer
 		//lecturerRepo.delete(lecturer)
 		//returns lecturer.build();
 		
-		//return lecturer.build();
-		return null;
+		return lecturer.build();
+		
 	}
 	@Override
 	@Transactional(readOnly = false)
 	public SubjectDto deleteSubject(long id) {
 		//  Auto-generated method stub
-		/*
+		
 		Subject subject = subjectRepo.findById(id)
 				.orElseThrow(() -> new NotFoundException(id +" no lecturer with such id"));
 		List<Mark> marks = markRepo.findBySubjectId(id);
 		marks.forEach(m -> markRepo.delete(m));
 		subjectRepo.deleteById(id);
 		return subject.build();
-		*/
-		return null;
+		
+	
 	}
 	@Override
 	@Transactional(readOnly = false)

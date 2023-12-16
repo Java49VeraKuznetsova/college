@@ -12,4 +12,6 @@ public interface MarkRepo extends JpaRepository<Mark, Long> {
 	
 	
 	List<SubjectNameScore> findByStudentName(String studentName);
+
+	List<Mark> findBySubjectId(long id);
 }
