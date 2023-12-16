@@ -194,5 +194,21 @@ CollegeService collegeService;
 		assertThrows(NotFoundException.class, () -> collegeService.updateLecturer(updateLectorWrongID));
 		assertEquals(updateLectorMozes, collegeService.updateLecturer(updateLectorMozes));
 	}
+	@Test
+	void deleteSubjectTest () {
+
+							
+				assertThrows(NotFoundException.class, () -> collegeService.deleteSubject(326));	
+				collegeService.deleteSubject(321);
+				assertThrows(NotFoundException.class, () -> collegeService.deleteSubject(321));	
+				
+	}
+	@Test
+	void deleteLecturerTest() {
+		assertThrows(NotFoundException.class, () -> collegeService.deleteLecturer(326));	
+		collegeService.deleteLecturer(1230);
+		assertThrows(NotFoundException.class, () -> collegeService.deleteLecturer(1230));
+		
+	}
 
 }
