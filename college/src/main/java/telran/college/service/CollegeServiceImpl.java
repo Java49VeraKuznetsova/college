@@ -104,7 +104,7 @@ public class CollegeServiceImpl implements CollegeService {
 		Mark mark = new Mark(markDto);
 		mark.setStudent(student);
 		mark.setSubject(subject);
-			
+			markRepo.save(mark);
 		
 		return markDto;
 	}
@@ -115,6 +115,7 @@ public class CollegeServiceImpl implements CollegeService {
 				.orElseThrow(() -> new NotFoundException(personDto.id() + " not exists"));
 		student.setCity(personDto.city());
 		student.setPhone(personDto.phone());
+		
 		return personDto;
 	}
 	@Override
@@ -130,31 +131,52 @@ public class CollegeServiceImpl implements CollegeService {
 	@Override
 	@Transactional(readOnly = false)
 	public PersonDto deleteLecturer(long id) {
+		
 		// TODO Auto-generated method stub
+		/*
 		Lecturer lecturer = lecturerRepo.findById(id)
 				.orElseThrow(() -> new NotFoundException(id +" no lecturer with such id"));
-	//	List<Subject> subjects = subjectRepo.findAllById((new Long(id)));
+	List<Subject> subjects = subjectRepo.findBySubjectId(id);
+	subjects.forEach(s->s.setLecturer(null));
+	lecturerRepo.delete(lecturer);
+	*/
 		//find Lecturer by id (with possible NotFoundException)
 		//find all subjects with a given lecturer
 		// update all subjects with being deleted lecturer by setting null in field Lecturer
 		//lecturerRepo.delete(lecturer)
 		//returns lecturer.build();
+		
+		//return lecturer.build();
 		return null;
 	}
 	@Override
 	@Transactional(readOnly = false)
 	public SubjectDto deleteSubject(long id) {
-		// TODO Auto-generated method stub
-		//find Subject by id (with possible NotFoundException)
-		// delete all marks with the subject
-		//delete subject
-		//returns subject.build();
+		//  Auto-generated method stub
+		/*
+		Subject subject = subjectRepo.findById(id)
+				.orElseThrow(() -> new NotFoundException(id +" no lecturer with such id"));
+		List<Mark> marks = markRepo.findBySubjectId(id);
+		marks.forEach(m -> markRepo.delete(m));
+		subjectRepo.deleteById(id);
+		return subject.build();
+		*/
 		return null;
 	}
 	@Override
 	@Transactional(readOnly = false)
 	public List<PersonDto> deleteStudentsHavingScoresLess(int nScores) {
 		// TODO Auto-generated method stub
+		/*
+		List<Student> students = 
+				studentRepo.deleteStudentsHavingScoresLess(nScores);
+		students.forEach(s -> {
+			long id = s.getId();
+			markRepo.deleteByStudentId(id);
+			studentRepo.deleteById(id);
+		});
+	*/
+		
 		return null;
 	}
 

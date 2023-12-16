@@ -29,6 +29,7 @@ List<String> findBestStudentsSubjectType(SubjectType type, int nStudents);
 			+ " where EXTRACT (MONTH FROM st.birthDate) = :month")
 	List<NamePhone> findStudentsBurnMonth(int month);
 	/************************************************/
+
 	
 	
 }
