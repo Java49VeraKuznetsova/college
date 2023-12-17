@@ -1,12 +1,12 @@
 package telran.college.entities;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import telran.college.dto.MarkDto;
+import lombok.Setter;
 @Entity
 @NoArgsConstructor
+
 @Table(name="marks")
-@Getter
 public class Mark {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
@@ -19,18 +19,12 @@ public class Mark {
 	Subject subject;
 	@Column(nullable = false)
 	int score;
-	public Mark (MarkDto markDto) {
-		score = markDto.score();
-		
-	}
-	public void setStudent(Student student) {
+	public Mark(Student student, Subject subject, int score) {
+		super();
 		this.student = student;
-	}
-	public void setSubject(Subject subject) {
 		this.subject = subject;
+		this.score = score;
 	}
-	public MarkDto build() {
-		return new MarkDto(student.id, subject.id, score);
-	}
+	
 
 }

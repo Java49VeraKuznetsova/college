@@ -23,13 +23,18 @@ List<String> findBestStudentsSubjectType(SubjectType type, int nStudents);
 			+ "from Mark mark "
 			+ "right join mark.student student   "
 			+ "group by student.name, student.city having count(mark.score) < :scoresThreshold")
-	List<StudentCity> findStudentsScoresLess(int scoresThreshold);
+	List<StudentCity> findStudentCitiesScoresLess(int scoresThreshold);
+	/*********************************/
+	@Query(value="SELECT student "
+			+ "from Mark mark "
+			+ "right join mark.student student   "
+			+ "group by student having count(mark.score) < :scoresThreshold")
+	List<Student> findStudentsScoresLess(int scoresThreshold);
 	/*************************************/
 	@Query(value="SELECT  st.name as name,  st.phone as phone from Student st"
 			+ " where EXTRACT (MONTH FROM st.birthDate) = :month")
 	List<NamePhone> findStudentsBurnMonth(int month);
 	/************************************************/
-
 	
 	
 }
