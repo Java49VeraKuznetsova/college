@@ -38,5 +38,10 @@ public class Subject {
 		return new SubjectDto(id, name, hours, lecturer.id, type);
 		
 	}
+	@Override
+	public String toString() {
+		return "Subject [id=" + id + ", name=" + name + ", hours=" + hours + ", lecturer=" + lecturer.name + ", type=" + type
+				+ "]";
+	}
 
 }
