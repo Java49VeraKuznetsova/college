@@ -23,14 +23,12 @@ public class CollegeServiceImpl implements CollegeService {
 	final SubjectRepo subjectRepo;
 	final MarkRepo markRepo;
 	final EntityManager em;
-	
 	@Override
 	@Transactional(readOnly=true)
 	public List<String> bestStudentsSubjectType(SubjectType type, int nStudents) {
 		
 		return studentRepo.findBestStudentsSubjectType( type, nStudents);
 	}
-	
 	@Override
 	@Transactional(readOnly=true)
 	public List<NameScore> studentsAvgMarks() {
@@ -133,7 +131,7 @@ public class CollegeServiceImpl implements CollegeService {
 		return personDto;
 	}
 	@Override
-	@Transactional(readOnly = false)
+	@Transactional
 	public PersonDto updateLecturer(PersonDto personDto) {
 		
 		return updatePerson(personDto, lecturerRepo, "lecturer");
@@ -173,18 +171,18 @@ public class CollegeServiceImpl implements CollegeService {
 		studentRepo.delete(student);
 	}
 	@Override
+	
 	public List<String> anyQuery(QueryDto queryDto) {
 		String queryStr = queryDto.query();
-        Query query;
-        List<String> res = null;
+		List<String> res = null;
+		Query query;
 		try {
 			query = queryDto.queryType() == QueryType.SQL ?
 					em.createNativeQuery(queryStr) : em.createQuery(queryStr);
-		  res = getResult(query);
-		} catch (Exception e) {
+			res = getResult(query);
+		} catch (Throwable e) {
 			res = List.of(e.getMessage());
 		}
-
 		return res;
 	}
 	@SuppressWarnings("unchecked")
@@ -196,32 +194,25 @@ public class CollegeServiceImpl implements CollegeService {
 		} catch (Exception e) {
 			res = List.of(e.getMessage());
 		}
-	
-		if(!resultList.isEmpty()) {
-			res = resultList.get(0).getClass().isArray() ?
-					listObjectArraysProcessing((List<Object[]>)resultList) :
-						listObjectsProcess(resultList);
-		}
 		
+		if (!resultList.isEmpty()) {
+			res = resultList.get(0).getClass().isArray() ?
+					listObjectArraysProcessing((List<Object[]>)resultList) : 
+						listObjectsProcessing(resultList);
+		}
 		return res;
 	}
-	private List<String> listObjectsProcess(List<?> resultList) {
+	private List<String> listObjectsProcessing(List<?> resultList) {
 		
 		try {
-			return resultList
-					.stream()
-					.map(Object::toString)
-					.toList();
+			return resultList.stream().map(Object::toString).toList();
 		} catch (Exception e) {
 			return List.of(e.getMessage());
 		}
 	}
 	private List<String> listObjectArraysProcessing(List<Object[]> resultList) {
 		
-		return resultList
-				.stream()
-				.map(Arrays::deepToString)
-				.toList();
+		return resultList.stream().map(Arrays::deepToString).toList();
 	}
 
 }
